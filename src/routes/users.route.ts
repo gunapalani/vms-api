@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { UserController } from '@controllers/users.controller';
 import { CreateUserDto } from '@dtos/users.dto';
 import { Routes } from '@interfaces/routes.interface';
-import { ValidationMiddleware } from '@middlewares/validation.middleware';
+import validationMiddleware from '@/middlewares/validation.middleware';
 
 export class UserRoute implements Routes {
   public path = '/users';
@@ -16,8 +16,11 @@ export class UserRoute implements Routes {
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.user.getUsers);
     this.router.get(`${this.path}/:id`, this.user.getUserById);
-    this.router.post(`${this.path}`, ValidationMiddleware(CreateUserDto), this.user.createUser);
-    this.router.put(`${this.path}/:id`, ValidationMiddleware(CreateUserDto, true), this.user.updateUser);
+    this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), this.user.createUser);
+    this.router.put(`${this.path}/:id`, validationMiddleware(CreateUserDto, 'body'), this.user.updateUser);
     this.router.delete(`${this.path}/:id`, this.user.deleteUser);
+    this.router.post(`${this.path}/adb2c`, this.user.createADB2CUserAsync);
+    this.router.put(`${this.path}/adb2c/:userId`, validationMiddleware(CreateUserDto, 'body'), this.user.updateADB2CUserAsync);
+    this.router.delete(`${this.path}/adb2c/:userId`, this.user.deleteADB2CUserAsync);
   }
 }
