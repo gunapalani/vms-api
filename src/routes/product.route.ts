@@ -14,16 +14,16 @@ class ProductRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`/v1${this.path}`, this.productController.getAll);
-    this.router.get(`/v1${this.path}/:id`, this.productController.getById);
+    this.router.get(`${this.path}`, this.productController.getAll);
+    this.router.get(`${this.path}/:id`, this.productController.getById);
     this.router.post(
-      `/v1${this.path}`,
+      `${this.path}`,
       validationMiddleware(productViewModel, 'body'),
 
       this.productController.create,
     );
-    this.router.put(`/v1${this.path}/:id`, this.productController.update);
-    this.router.delete(`/v1${this.path}/:id`, this.productController.delete);
+    this.router.put(`${this.path}/:id`, this.productController.update);
+    this.router.delete(`${this.path}/:id`, this.productController.delete);
   }
 }
 
